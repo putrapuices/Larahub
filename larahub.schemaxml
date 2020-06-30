@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">Larahub</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="jawaban" view="standard">
+<left>57</left>
+<top>313</top>
+<width>321</width>
+<height>163</height>
+<sql_create_table>CREATE TABLE `jawaban` (
+  `jawaban_id` int(11) NOT NULL AUTO_INCREMENT,
+  `jawaban_isi` varchar(100) DEFAULT NULL,
+  `jawaban_tanggal_dibuat` datetime DEFAULT NULL,
+  `jawaban_tanggal_diperbaharui` datetime DEFAULT NULL,
+  `pertanyaan_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`jawaban_id`),
+  KEY `pertanyaan_id` (`pertanyaan_id`),
+  CONSTRAINT `jawaban_ibfk_1` FOREIGN KEY (`pertanyaan_id`) REFERENCES `pertanyaan` (`pertanyaan_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="komentar" view="standard">
+<left>376</left>
+<top>35</top>
+<width>297</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `komentar` (
+  `komentar_id` int(11) NOT NULL AUTO_INCREMENT,
+  `komentar_isi` varchar(100) DEFAULT NULL,
+  `komentar_tanggal_dibuat` datetime DEFAULT NULL,
+  `pemberi_komentar_id` int(11) DEFAULT NULL,
+  `pertanyaan_id` int(11) DEFAULT NULL,
+  `jawaban_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`komentar_id`),
+  KEY `pertanyaan_id` (`pertanyaan_id`),
+  KEY `jawaban_id` (`jawaban_id`),
+  CONSTRAINT `komentar_ibfk_1` FOREIGN KEY (`pertanyaan_id`) REFERENCES `pertanyaan` (`pertanyaan_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `komentar_ibfk_2` FOREIGN KEY (`jawaban_id`) REFERENCES `jawaban` (`jawaban_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="pertanyaan" view="standard">
+<left>555</left>
+<top>519</top>
+<width>321</width>
+<height>163</height>
+<sql_create_table>CREATE TABLE `pertanyaan` (
+  `pertanyaan_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pertanyaan_judul` varchar(50) DEFAULT NULL,
+  `pertanyaan_isi` varchar(100) DEFAULT NULL,
+  `pertanyaan_tanggal_dibuat` datetime DEFAULT NULL,
+  `pertanyaan_tanggaldiperbaharui` datetime DEFAULT NULL,
+  PRIMARY KEY (`pertanyaan_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="like" view="standard">
+<left>964</left>
+<top>389</top>
+<width>196</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `like` (
+  `like_id` int(11) NOT NULL AUTO_INCREMENT,
+  `profile_id` int(11) DEFAULT NULL,
+  `jawaban_id` int(11) DEFAULT NULL,
+  `pertanyaan_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`like_id`),
+  KEY `profile_id` (`profile_id`),
+  KEY `jawaban_id` (`jawaban_id`),
+  KEY `pertanyaan_id` (`pertanyaan_id`),
+  CONSTRAINT `like_ibfk_1` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`profile_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `like_ibfk_2` FOREIGN KEY (`jawaban_id`) REFERENCES `jawaban` (`jawaban_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `like_ibfk_3` FOREIGN KEY (`pertanyaan_id`) REFERENCES `pertanyaan` (`pertanyaan_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="vote" view="standard">
+<left>710</left>
+<top>56</top>
+<width>212</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `vote` (
+  `vote_id` int(11) NOT NULL AUTO_INCREMENT,
+  `like_id` int(11) DEFAULT NULL,
+  `vote_jumlah_like` int(11) DEFAULT NULL,
+  PRIMARY KEY (`vote_id`),
+  KEY `like_id` (`like_id`),
+  CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`like_id`) REFERENCES `like` (`like_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="profile" view="standard">
+<left>1144</left>
+<top>77</top>
+<width>271</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `profile` (
+  `profile_id` int(11) NOT NULL AUTO_INCREMENT,
+  `profile_nama_lengkap` varchar(30) DEFAULT NULL,
+  `profile_email` varchar(30) DEFAULT NULL,
+  `profile_photo` blob DEFAULT NULL,
+  PRIMARY KEY (`profile_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
